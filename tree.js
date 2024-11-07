@@ -46,7 +46,23 @@ export default class Tree {
   // true return null
   // node {data: 1, left = null, right = null}
   //
-  insert(value) {}
+  insert(value) {
+    let currNode = this.root;
+    if (value === currNode.data) return;
+    while (currNode.left !== null || currNode.right !== null) {
+      if (currNode.data === value) return;
+      if (value > currNode.data) {
+        currNode = currNode.right;
+      } else {
+        currNode = currNode.left;
+      }
+    }
+    if (currNode.data > value) {
+      currNode.left = new Node(value);
+    } else {
+      currNode.right = new Node(value);
+    }
+  }
 
   deleteItem(value) {}
 
