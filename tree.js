@@ -62,7 +62,53 @@ export default class Tree {
       : (currNode.right = new Node(value));
   }
 
-  deleteItem(value) {}
+  deleteItem(value) {
+    let currNode = this.root;
+    let prevNode;
+    let path;
+    while (currNode !== null) {
+      if (currNode.data === value) {
+        break;
+      }
+      if (currNode.data > value) {
+        prevNode = currNode;
+        currNode = currNode.left;
+        path = "left";
+      }
+      if (currNode.data < value) {
+        prevNode = currNode;
+        currNode = currNode.right;
+        path = "right";
+      }
+    }
+    console.log(prevNode, currNode);
+    // if leaf node has no children, you can just remove it.
+    if (currNode.left === null && currNode.right === null) {
+      if (path === "left") prevNode.left = null;
+      if (path === "right") prevNode.right = null;
+      return;
+    }
+    // if leaf node has 1 child, you need to copy the child
+    // and post it to the previous node
+    if (currNode.left === null) {
+      if (path === "left") {
+        prevNode.left = currNode.left;
+      }
+      if (path === "right") {
+        prevNode.right = currNode.right;
+      }
+    }
+    if (currNode.right === null) {
+      if (path === "left") {
+        prevNode.left = currNode.left;
+      }
+      if (path === "right") {
+        prevNode.right = currNode.right;
+      }
+    }
+    // if leaf node has both children, you need to find the
+    // successor or predecessor for the node.
+  }
 
   find(value) {}
 
