@@ -48,8 +48,8 @@ export default class Tree {
   //
   insert(value) {
     let currNode = this.root;
-    if (value === currNode.data) return;
     while (currNode.left !== null || currNode.right !== null) {
+      console.log(currNode);
       if (currNode.data === value) return;
       if (value > currNode.data) {
         currNode = currNode.right;
@@ -57,11 +57,9 @@ export default class Tree {
         currNode = currNode.left;
       }
     }
-    if (currNode.data > value) {
-      currNode.left = new Node(value);
-    } else {
-      currNode.right = new Node(value);
-    }
+    currNode.data > value
+      ? (currNode.left = new Node(value))
+      : (currNode.right = new Node(value));
   }
 
   deleteItem(value) {}
