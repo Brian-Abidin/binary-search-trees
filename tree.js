@@ -46,10 +46,25 @@ export default class Tree {
   // true return null
   // node {data: 1, left = null, right = null}
   //
+  insert(value) {}
+
+  deleteItem(value) {}
+
+  find(value) {}
+
+  levelOrder(callback) {}
+
+  inOrder(callback) {}
+
+  preOrder(callback) {}
+
+  postOrder(callback) {}
+
+  height(node) {}
+
+  depth(node) {}
+
+  isBalanced() {}
+
+  rebalance() {}
 }
-
-function buildTree(array) {}
-
-function insert(value) {}
-
-function deleteItem(value) {}
