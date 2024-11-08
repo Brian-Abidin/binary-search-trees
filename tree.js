@@ -130,7 +130,7 @@ export default class Tree {
     return currNode;
   }
 
-  levelOrder(callback, queue = [this.root]) {
+  levelOrder(callback, queue = [this.root], order = []) {
     // traverse the tree breadth-first level order
     // call the callback on each node as it traverses,
     // passing the whole node as an argument
@@ -138,14 +138,16 @@ export default class Tree {
     // if no callback, throw an error
     // use an array acting as a queue to keep track of all the nodes
     if (callback === undefined) throw new Error("callback function required");
-    if (queue.length === 0) return;
+
+    if (queue.length === 0) return queue[0];
     const currNode = queue[0];
     if (callback(currNode)) {
       if (currNode.left !== null) queue.push(currNode.left);
       if (currNode.right !== null) queue.push(currNode.right);
-      queue.shift();
-      return this.levelOrder(callback, queue);
+      order.push(queue.shift().data);
+      this.levelOrder(callback, queue, order);
     }
+    return order;
   }
 
   inOrder(callback, currNode = this.root) {
@@ -175,7 +177,18 @@ export default class Tree {
     callback(currNode);
   }
 
-  height(node) {}
+  height(node, counter = 0) {
+    console.log(node, counter);
+    if (node === null) return;
+    const order = this.levelOrder((item) => item);
+    const lowestLevel = order[order.length - 1];
+    if (node.data > lowestLevel) {
+      counter = this.height(node.left, (counter += 1));
+    } else if (node.data < lowestLevel) {
+      counter = this.height(node.right, (counter += 1));
+    }
+    return counter;
+  }
 
   depth(node) {}
 
