@@ -177,18 +177,15 @@ export default class Tree {
     callback(currNode);
   }
 
-  height(node, counter = 0) {
-    console.log(node, counter);
-    if (node === null) throw new Error("Node doesn't exist");
-    const order = this.levelOrder((item) => item);
-    const lowestLevel = order[order.length - 1];
-    if (node.data > lowestLevel) {
-      counter = this.height(node.left, (counter += 1));
-    } else if (node.data < lowestLevel) {
-      counter = this.height(node.right, (counter += 1));
-    }
-    return counter;
+  height(node) {
+    if (node === null) return -1;
+    const leftHeight = this.height(node.left);
+    const rightHeight = this.height(node.right);
+    console.log(leftHeight, rightHeight);
+    return Math.max(leftHeight, rightHeight) + 1;
   }
+  // 8
+  // left -> 7 -> 6 -> null (-1)
 
   depth(node, counter = 0, currNode = this.root) {
     if (node === null) throw new Error("Node doesn't exist");
@@ -199,7 +196,11 @@ export default class Tree {
     return counter;
   }
 
-  isBalanced() {}
+  isBalanced() {
+    const leftSubtree = this.height(this.root.left);
+    const rightSubtree = this.height(this.root.right);
+    console.log(leftSubtree, rightSubtree);
+  }
 
   rebalance() {}
 }
