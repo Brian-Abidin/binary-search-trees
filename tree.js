@@ -10,7 +10,6 @@ export default class Tree {
   // Node objects appropriately placed, sorting and removing dupes
   // returns level-0 root node
   buildTree(array) {
-    console.log(array, "Array");
     if (array.length === 0) return null;
     const mid = Math.floor(array.length / 2);
     const node = new Node(array[mid]);
@@ -150,15 +149,16 @@ export default class Tree {
     return order;
   }
 
-  inOrder(callback, currNode = this.root) {
+  inOrder(callback, currNode = this.root, order = []) {
     // traverse tree in depth-first order and pass each node
     // to the call back.
     // throw error if no callback is given.
     if (callback === undefined) throw new Error("callback function required");
     if (currNode === null) return;
-    this.inOrder(callback, currNode.left);
-    callback(currNode);
-    this.inOrder(callback, currNode.right);
+    this.inOrder(callback, currNode.left, order);
+    order.push(callback(currNode).data);
+    this.inOrder(callback, currNode.right, order);
+    return order;
   }
 
   preOrder(callback, currNode = this.root) {
@@ -205,5 +205,8 @@ export default class Tree {
     return !(max - min > 1);
   }
 
-  rebalance() {}
+  reBalance() {
+    const sortedArray = this.inOrder((ele) => ele);
+    this.root = this.buildTree(sortedArray);
+  }
 }
