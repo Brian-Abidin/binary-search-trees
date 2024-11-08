@@ -130,7 +130,22 @@ export default class Tree {
     return currNode;
   }
 
-  levelOrder(callback) {}
+  levelOrder(callback, queue = [this.root]) {
+    // traverse the tree breadth-first level order
+    // call the callback on each node as it traverses,
+    // passing the whole node as an argument
+    // similar to how forEach works for arrays
+    // if no callback, throw an error
+    // use an array acting as a queue to keep track of all the nodes
+    if (queue.length === 0) return;
+    const currNode = queue[0];
+    if (callback(currNode)) {
+      if (currNode.left !== null) queue.push(currNode.left);
+      if (currNode.right !== null) queue.push(currNode.right);
+      queue.shift();
+      return this.levelOrder(callback, queue);
+    }
+  }
 
   inOrder(callback) {}
 
