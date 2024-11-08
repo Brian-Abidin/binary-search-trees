@@ -119,7 +119,7 @@ export default class Tree {
   }
 
   find(value, currNode = this.root) {
-    if (currNode === null) return `${value} doesn't exist in this tree`;
+    if (currNode === null) return null;
     if (currNode.data === value) return currNode;
     if (currNode.data > value) {
       currNode = this.find(value, currNode.left);
@@ -179,7 +179,7 @@ export default class Tree {
 
   height(node, counter = 0) {
     console.log(node, counter);
-    if (node === null) return;
+    if (node === null) throw new Error("Node doesn't exist");
     const order = this.levelOrder((item) => item);
     const lowestLevel = order[order.length - 1];
     if (node.data > lowestLevel) {
@@ -190,7 +190,14 @@ export default class Tree {
     return counter;
   }
 
-  depth(node) {}
+  depth(node, counter = 0, currNode = this.root) {
+    if (node === null) throw new Error("Node doesn't exist");
+    if (node.data > currNode.data)
+      counter = this.depth(node, (counter += 1), currNode.right);
+    if (node.data < currNode.data)
+      counter = this.depth(node, (counter += 1), currNode.left);
+    return counter;
+  }
 
   isBalanced() {}
 
