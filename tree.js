@@ -48,9 +48,7 @@ export default class Tree {
   //
   insert(value, currNode = this.root) {
     // Recursion
-    console.log(currNode);
     if (currNode === null) return new Node(value);
-    console.log("hello");
     if (currNode.data === value) return currNode;
     if (value < currNode.data) {
       currNode.left = this.insert(value, currNode.left);
@@ -120,7 +118,17 @@ export default class Tree {
     */
   }
 
-  find(value) {}
+  find(value, currNode = this.root) {
+    if (currNode === null) return `${value} doesn't exist in this tree`;
+    if (currNode.data === value) return currNode;
+    if (currNode.data > value) {
+      currNode = this.find(value, currNode.left);
+    }
+    if (currNode.data < value) {
+      currNode = this.find(value, currNode.right);
+    }
+    return currNode;
+  }
 
   levelOrder(callback) {}
 
