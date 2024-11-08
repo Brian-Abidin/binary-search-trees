@@ -148,15 +148,32 @@ export default class Tree {
     }
   }
 
-  inOrder(callback) {
+  inOrder(callback, currNode = this.root) {
     // traverse tree in depth-first order and pass each node
     // to the call back.
     // throw error if no callback is given.
+    if (callback === undefined) throw new Error("callback function required");
+    if (currNode === null) return;
+    this.inOrder(callback, currNode.left);
+    callback(currNode);
+    this.inOrder(callback, currNode.right);
   }
 
-  preOrder(callback) {}
+  preOrder(callback, currNode = this.root) {
+    if (callback === undefined) throw new Error("callback function required");
+    if (currNode === null) return;
+    callback(currNode);
+    this.preOrder(callback, currNode.left);
+    this.preOrder(callback, currNode.right);
+  }
 
-  postOrder(callback) {}
+  postOrder(callback, currNode = this.root) {
+    if (callback === undefined) throw new Error("callback function required");
+    if (currNode === null) return;
+    this.postOrder(callback, currNode.left);
+    this.postOrder(callback, currNode.right);
+    callback(currNode);
+  }
 
   height(node) {}
 
