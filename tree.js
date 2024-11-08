@@ -46,68 +46,78 @@ export default class Tree {
   // true return null
   // node {data: 1, left = null, right = null}
   //
-  insert(value) {
-    let currNode = this.root;
-    while (currNode.left !== null || currNode.right !== null) {
-      console.log(currNode);
-      if (currNode.data === value) return;
-      if (value > currNode.data) {
-        currNode = currNode.right;
-      } else {
-        currNode = currNode.left;
-      }
+  insert(value, currNode = this.root) {
+    // Recursion
+    console.log(currNode);
+    if (currNode === null) return new Node(value);
+    console.log("hello");
+    if (currNode.data === value) return currNode;
+    if (value < currNode.data) {
+      currNode.left = this.insert(value, currNode.left);
+    } else if (value > currNode.data) {
+      currNode.right = this.insert(value, currNode.right);
     }
-    currNode.data > value
-      ? (currNode.left = new Node(value))
-      : (currNode.right = new Node(value));
+    return currNode;
   }
 
-  deleteItem(value) {
-    let currNode = this.root;
-    let prevNode;
-    let path;
-    while (currNode !== null) {
-      if (currNode.data === value) {
-        break;
-      }
-      if (currNode.data > value) {
-        prevNode = currNode;
-        currNode = currNode.left;
-        path = "left";
-      }
-      if (currNode.data < value) {
-        prevNode = currNode;
-        currNode = currNode.right;
-        path = "right";
-      }
+  // finds the node with the next highest data of currNode
+  getSuccessor(currNode) {
+    currNode = currNode.right;
+    while (currNode !== null && currNode.left !== null) {
+      currNode = currNode.left;
     }
-    console.log(prevNode, currNode);
-    // if leaf node has no children, you can just remove it.
-    if (currNode.left === null && currNode.right === null) {
-      if (path === "left") prevNode.left = null;
-      if (path === "right") prevNode.right = null;
-      return;
+    return currNode;
+  }
+
+  deleteItem(value, currNode = this.root) {
+    // base case
+    if (currNode === null) return currNode;
+    if (value > currNode.data) {
+      currNode.right = this.deleteItem(value, currNode.right);
+    } else if (value < currNode.data) {
+      currNode.left = this.deleteItem(value, currNode.left);
+      // if node data === value
+      // if node has 0 children or
+      // left or right child
+    } else {
+      if (currNode.left === null) {
+        return currNode.right;
+      }
+      if (currNode.right === null) {
+        return currNode.left;
+      }
+      // if node has both children
+      const successor = this.getSuccessor(currNode);
+      currNode.data = successor.data;
+      currNode.right = this.deleteItem(successor.data, currNode.right);
     }
-    // if leaf node has 1 child, you need to copy the child
-    // and post it to the previous node
-    if (currNode.left === null) {
-      if (path === "left") {
-        prevNode.left = currNode.left;
-      }
-      if (path === "right") {
-        prevNode.right = currNode.right;
-      }
-    }
-    if (currNode.right === null) {
-      if (path === "left") {
-        prevNode.left = currNode.left;
-      }
-      if (path === "right") {
-        prevNode.right = currNode.right;
-      }
-    }
-    // if leaf node has both children, you need to find the
-    // successor or predecessor for the node.
+    return currNode;
+    /*
+    deleteItem(3, this.root)
+    (currNode === null) false
+    (3 > 5) false
+    (3 < 5) true
+    currNode.left = (this.deleteItem(3, currNode.left))
+    ** recursion 1**
+    deleteItem(3, Node{data: 3, left: 1, right: 4})
+    (currNode === null) false
+    (3 > 3) false
+    (3 < 3) false
+    (currNode.left === null) false
+    (currNode.right === null) false
+    successor = getSuccesor(currNode)
+    > successor = Node{data: 4}
+    Node{data: 3} = Node{data: 4}
+    Node{data: 4, right: Node {data :4}} = this.deleteItem(4, Node{data: 4})
+    ** recursion 2 **
+    (currNode === null) false
+    (4 = 4)
+    currNode.left === null true
+    return node.right (null)
+    so, Node{data 4, left: 1, right: null} RECURSION 2 COMPLETE
+    return Node{data 4, left: 1, right: null} 
+    so, currNode.left = Node{data 4, left: 1, right: null} RECURSION 1 COMPLETE
+    */
   }
 
   find(value) {}
