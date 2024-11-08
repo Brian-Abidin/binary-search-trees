@@ -199,7 +199,10 @@ export default class Tree {
   isBalanced() {
     const leftSubtree = this.height(this.root.left);
     const rightSubtree = this.height(this.root.right);
-    console.log(leftSubtree, rightSubtree);
+    const max = Math.max(leftSubtree, rightSubtree);
+    const min = Math.min(leftSubtree, rightSubtree);
+
+    return !(max - min > 1);
   }
 
   rebalance() {}
