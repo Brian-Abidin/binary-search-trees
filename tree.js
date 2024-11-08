@@ -137,6 +137,7 @@ export default class Tree {
     // similar to how forEach works for arrays
     // if no callback, throw an error
     // use an array acting as a queue to keep track of all the nodes
+    if (callback === undefined) throw new Error("callback function required");
     if (queue.length === 0) return;
     const currNode = queue[0];
     if (callback(currNode)) {
@@ -147,7 +148,11 @@ export default class Tree {
     }
   }
 
-  inOrder(callback) {}
+  inOrder(callback) {
+    // traverse tree in depth-first order and pass each node
+    // to the call back.
+    // throw error if no callback is given.
+  }
 
   preOrder(callback) {}
 
