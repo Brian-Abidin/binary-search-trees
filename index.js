@@ -1,18 +1,17 @@
 import Tree from "./tree.js";
-import Node from "./node.js";
 
-console.log("hello");
-const myArray = [3, 1, 5, 4, 2, 2, 3, 4, 5, 6, 7, 8, 9]; // Duplicate '2' will be removed in the Set
+function getRandomint(max, amount) {
+  const randArray = [];
+  while (randArray.length < amount) {
+    randArray.push(Math.floor(Math.random() * max));
+  }
+  return randArray;
+}
 
-const tree1 = new Tree(myArray);
+const array = getRandomint(100, 10);
+const tree = new Tree(array);
 
-tree1.insert(12);
-tree1.insert(11);
-tree1.insert(13);
-// tree1.insert(11);
-// tree1.insert(10);
-
-const prettyPrint = (node = tree1.root, prefix = "", isLeft = true) => {
+const prettyPrint = (node = tree.root, prefix = "", isLeft = true) => {
   if (node === null) {
     return;
   }
@@ -25,15 +24,48 @@ const prettyPrint = (node = tree1.root, prefix = "", isLeft = true) => {
   }
 };
 
-tree1.deleteItem(2);
-console.log(tree1.find(14));
+prettyPrint();
+console.log(tree.isBalanced());
+console.log(
+  tree.levelOrder((ele) => ele),
+  "levelOrder"
+);
+console.log(
+  tree.preOrder((ele) => ele),
+  "preOrder"
+);
+console.log(
+  tree.inOrder((ele) => ele),
+  "inOrder"
+);
+console.log(
+  tree.postOrder((ele) => ele),
+  "postOrder"
+);
+
+tree.insert(101);
+tree.insert(110);
+tree.insert(160);
+
 prettyPrint();
 
-function temp(node) {
-  console.log(node);
-  return node;
-}
-const arr = [];
-const node = new Node(2);
-
-tree1.levelOrder(temp);
+console.log(tree.isBalanced());
+tree.reBalance();
+prettyPrint();
+console.log(tree.isBalanced());
+console.log(
+  tree.levelOrder((ele) => ele),
+  "levelOrder"
+);
+console.log(
+  tree.preOrder((ele) => ele),
+  "preOrder"
+);
+console.log(
+  tree.inOrder((ele) => ele),
+  "inOrder"
+);
+console.log(
+  tree.postOrder((ele) => ele),
+  "postOrder"
+);
