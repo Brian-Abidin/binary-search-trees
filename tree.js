@@ -129,7 +129,7 @@ export default class Tree {
     return currNode;
   }
 
-  levelOrder(callback, queue = [this.root], order = []) {
+  levelOrder(callback, queue = [this.root], orderList = []) {
     // traverse the tree breadth-first level order
     // call the callback on each node as it traverses,
     // passing the whole node as an argument
@@ -143,45 +143,46 @@ export default class Tree {
     if (callback(currNode)) {
       if (currNode.left !== null) queue.push(currNode.left);
       if (currNode.right !== null) queue.push(currNode.right);
-      order.push(queue.shift().data);
-      this.levelOrder(callback, queue, order);
+      orderList.push(queue.shift().data);
+      this.levelOrder(callback, queue, orderList);
     }
-    return order;
+    return orderList;
   }
 
-  inOrder(callback, currNode = this.root, order = []) {
+  inOrder(callback, currNode = this.root, orderList = []) {
     // traverse tree in depth-first order and pass each node
     // to the call back.
     // throw error if no callback is given.
     if (callback === undefined) throw new Error("callback function required");
     if (currNode === null) return;
-    this.inOrder(callback, currNode.left, order);
-    order.push(callback(currNode).data);
-    this.inOrder(callback, currNode.right, order);
-    return order;
+    this.inOrder(callback, currNode.left, orderList);
+    orderList.push(callback(currNode).data);
+    this.inOrder(callback, currNode.right, orderList);
+    return orderList;
   }
 
-  preOrder(callback, currNode = this.root) {
+  preOrder(callback, currNode = this.root, orderList = []) {
     if (callback === undefined) throw new Error("callback function required");
     if (currNode === null) return;
-    callback(currNode);
-    this.preOrder(callback, currNode.left);
-    this.preOrder(callback, currNode.right);
+    orderList.push(callback(currNode).data);
+    this.preOrder(callback, currNode.left, orderList);
+    this.preOrder(callback, currNode.right, orderList);
+    return orderList;
   }
 
-  postOrder(callback, currNode = this.root) {
+  postOrder(callback, currNode = this.root, orderList = []) {
     if (callback === undefined) throw new Error("callback function required");
     if (currNode === null) return;
-    this.postOrder(callback, currNode.left);
-    this.postOrder(callback, currNode.right);
-    callback(currNode);
+    this.postOrder(callback, currNode.left, orderList);
+    this.postOrder(callback, currNode.right, orderList);
+    orderList.push(callback(currNode).data);
+    return orderList;
   }
 
   height(node) {
     if (node === null) return -1;
     const leftHeight = this.height(node.left);
     const rightHeight = this.height(node.right);
-    console.log(leftHeight, rightHeight);
     return Math.max(leftHeight, rightHeight) + 1;
   }
   // 8
